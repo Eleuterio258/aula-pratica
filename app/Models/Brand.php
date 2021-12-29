@@ -6,32 +6,28 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Category
+ * Class Brand
  * 
  * @property int $id
- * @property string $name
- * @property string $image_url
- * @property string|null $icon
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property string|null $name
+ * @property string|null $description
  * 
  * @property Collection|Product[] $products
  *
  * @package App\Models
  */
-class Category extends Model
+class Brand extends Model
 {
-	protected $table = 'categories';
+	protected $table = 'brands';
+	public $timestamps = false;
 
 	protected $fillable = [
 		'name',
-		'image_url',
-		'icon'
+		'description'
 	];
 
 	public function products()

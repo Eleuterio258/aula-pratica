@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Custemer\Order;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -73,36 +74,81 @@ class OrderController extends Controller
 
 
     public function orderdetalhe($id)
+   // public function orderdetalhe()
     {
 
-        $orders =  Order::where('id', $id)->where('user_id', Auth()->user()->id)
+        $orders =  Order::where('id', $id)->where('delivery_id','2')->first();
+       // $orders =  Order::where('status', '1');
+         $order = [];
+          foreach ($orders->orderItems as $item) {
+              $data = [
+                  'name' =>  $item->products->name,
+                  'quantity' => $item->quantity,
+                  'price' => $item->price,
+              ];
 
-            ->first();
-        $order = [];
-         foreach ($orders->orderItems as $item) {
-             $data = [
-                 'name' =>  $item->products->name,
-                 'quantity' => $item->quantity,
-                 'price' => $item->price,
-             ];
-
-             array_push($order, $data);
-         }
+              array_push($order, $data);
+          }
 
 
-        $orderAddress = [
-            'FistName' => $orders->fname,
-            'LastName' => $orders->lname,
-            'Email' => $orders->email,
-            'Phone' => $orders->phone,
-            'ShoppingAddress' => $orders->address,
-            'Zip' => $orders->postalcode,
-            'iva' => $orders->iva,
-            'status' => $orders->status,
-            'total' => $orders->total_price,
+         $orderAddress = [
+             'fistName' => $orders->fname,
+             'lastName' => $orders->lname,
+             'email' => $orders->email,
+             'phone' => $orders->phone,
+             'adress' => $orders->address,
+             'postalcode' => $orders->postalcode,
+             'city' => $orders->city,
+             'province' => $orders->province,
+             'status' => $orders->status,
+             'frete' => $orders->frete,
+             'subtotal' => $orders->subtotal,
+             'total' => $orders->total_price,
+             'order_tacking' => $orders->order_tacking,
+             'order_data' => date('d-m-y', strtotime($orders->created_at)),
+             'order_items' => $order,
+         ];
 
-        ];
+        return $orderAddress;
+    }
 
-        return [$orderAddress, $order];
+
+    public function allOrderDetalhe()
+    {
+
+
+        $orders =  Order::where('delivery_id', '2')->get();
+        //  $orders =  Order::where('status', '1');
+        // $order = [];
+        // foreach ($orders->orderItems as $item) {
+        //     $data = [
+        //         'name' =>  $item->products->name,
+        //         'quantity' => $item->quantity,
+        //         'price' => $item->price,
+        //     ];
+
+        //     array_push($order, $data);
+        // }
+
+
+        // $orderAddress = [
+        //     'fistName' => $orders->fname,
+        //     'lastName' => $orders->lname,
+        //     'email' => $orders->email,
+        //     'phone' => $orders->phone,
+        //     'adress' => $orders->address,
+        //     'postalcode' => $orders->postalcode,
+        //     'city' => $orders->city,
+        //     'province' => $orders->province,
+        //     'status' => $orders->status,
+        //     'frete' => $orders->frete,
+        //     'subtotal' => $orders->subtotal,
+        //     'total' => $orders->total_price,
+        //     'order_tacking' => $orders->order_tacking,
+        //     'order_data' => date('d-m-y', strtotime($orders->created_at)),
+        //     'order_items' => $order,
+        // ];
+
+        return $orders;
     }
 }

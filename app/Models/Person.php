@@ -10,40 +10,36 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Cart
+ * Class Person
  * 
  * @property int $id
  * @property int $user_id
- * @property int|null $product_id
- * @property int|null $quantity
+ * @property string|null $firstname
+ * @property string|null $lastName
+ * @property string|null $phone
+ * @property string|null $image
  * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
  * 
- * @property Product|null $product
  * @property User $user
  *
  * @package App\Models
  */
-class Cart extends Model
+class Person extends Model
 {
-	protected $table = 'carts';
+	protected $table = 'person';
+	public $timestamps = false;
 
 	protected $casts = [
-		'user_id' => 'int',
-		'product_id' => 'int',
-		'quantity' => 'int'
+		'user_id' => 'int'
 	];
 
 	protected $fillable = [
 		'user_id',
-		'product_id',
-		'quantity'
+		'firstname',
+		'lastName',
+		'phone',
+		'image'
 	];
-
-	public function product()
-	{
-		return $this->belongsTo(Product::class);
-	}
 
 	public function user()
 	{

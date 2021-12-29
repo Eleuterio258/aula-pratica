@@ -11,31 +11,27 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Category
+ * Class Role
  * 
  * @property int $id
  * @property string $name
- * @property string $image_url
- * @property string|null $icon
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * 
- * @property Collection|Product[] $products
+ * @property Collection|User[] $users
  *
  * @package App\Models
  */
-class Category extends Model
+class Role extends Model
 {
-	protected $table = 'categories';
+	protected $table = 'roles';
 
 	protected $fillable = [
-		'name',
-		'image_url',
-		'icon'
+		'name'
 	];
 
-	public function products()
+	public function users()
 	{
-		return $this->hasMany(Product::class);
+		return $this->hasMany(User::class);
 	}
 }

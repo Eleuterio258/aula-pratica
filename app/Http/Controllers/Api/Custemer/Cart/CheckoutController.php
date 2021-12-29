@@ -17,7 +17,7 @@ use Nette\Utils\Random;
 class CheckoutController extends Controller
 {
 
-    public function index()
+ public function index()
     {
         try {
             $oldcartItens = Cart::where('user_id', Auth()->user()->id)
@@ -25,8 +25,7 @@ class CheckoutController extends Controller
 
             foreach ($oldcartItens as $itens) {
 
-
-                if (!Product::where('id', $itens->product_id->where('stock', '>=', $itens->product_id->exists))) {
+                if (!Product::where('id', $itens->product_id)->where('stock', '>=', $itens->product_id)->exists()) {
                     $cartRemove = Cart::where('user_id', Auth()->user()->id)
                         ->where('product_id', $itens->product_id)
                         ->first();
@@ -35,6 +34,8 @@ class CheckoutController extends Controller
             }
             $cartItens = Cart::where('user_id', Auth()->user()->id)
                 ->get();
+
+            return  $cartItens;
         } catch (\Exception $exception) {
             return response()->json(['data' => $exception], 500);
         }
